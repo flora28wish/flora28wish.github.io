@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <base href="/">
   
-  <title>PHP 方法多載 1 | 築夢踏實</title>
+  <title>PHP 方法多載 2 | 築夢踏實</title>
   
   
 
@@ -276,8 +276,8 @@
         
   
     <h1 class="title">
-      <a href="/2020/04/18/PHP%20%E6%96%B9%E6%B3%95%E5%A4%9A%E8%BC%89%201/">
-        PHP 方法多載 1
+      <a href="/2020/04/21/PHP%20%E6%96%B9%E6%B3%95%E5%A4%9A%E8%BC%89%202/">
+        PHP 方法多載 2
       </a>
     </h1>
   
@@ -308,7 +308,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-    <p>2020-04-18</p>
+    <p>2020-04-21</p>
   </a>
 </div>
 
@@ -366,92 +366,36 @@
 
     <section class="article typo">
       <div class="article-entry" itemprop="articleBody">
-        <p>我是又小又菜的 PHP 工程師，目前的工作主要都是使用 Laravel 框架進行開發，其中經常使用到 <a href="https://github.com/andersao/l5-repository" target="_blank" rel="noopener">andersao/l5-repository</a> 套件，一直以來都是乖乖的按照文件上面提供的方法使用，忽然心血來潮的看了看源代碼。誒！怎麼錯過了這麼好用的方法呢～趕快來筆記一下💕</p>
-<h1 id="多載-Overloading"><a href="#多載-Overloading" class="headerlink" title="多載 Overloading"></a>多載 Overloading</h1><p>PHP 多載意指動態創建屬性或方法。透過魔術方法來實現。 <a href="https://www.php.net/manual/en/language.oop5.overloading.php" target="_blank" rel="noopener">參考</a></p>
-<small style="color: lightslategray">
-Overloading in PHP provides means to dynamically "create" properties and methods.
-These dynamic entities are processed via magic methods.
-</small>
-
-<p>與 Java 多載的概念不同，這點需要特別注意！</p>
-<small style="color: lightslategray">
-PHP's overloading features are different from Java's.
-</small>
-
-<h2 id="方法多載-Method-Overloading"><a href="#方法多載-Method-Overloading" class="headerlink" title="方法多載 Method Overloading"></a>方法多載 Method Overloading</h2><p>方法多載有 <code>__call()</code> 和 <code>__callStatic()</code> 這兩種魔法方法。 <a href="https://www.php.net/manual/en/language.oop5.overloading.php#object.call" target="_blank" rel="noopener">參考</a></p>
-<small style="color: lightslategray">
-Overloading methods via the __call() and __callStatic() magic methods.
-</small>
-
-<h3 id="call"><a href="#call" class="headerlink" title="__call"></a>__call</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public __call(string $name, array $arguments): mixed</span><br></pre></td></tr></table></figure>
-
-<p><code>$name</code> → 要呼叫的方法名稱</p>
-<small style="color: lightslategray">
-The $name argument is the name of the method being called.<br>
-</small>
-
-<p><code>$arguments</code> → 傳給 <code>$name</code> 方法的枚舉陣列</p>
-<small style="color: lightslategray">
-The $arguments argument is an enumerated array containing the parameters passed to the $name's method.
-</small>
-
-<h4 id="若呼叫物件某個方法，但這個方法未被定義時，就會觸發-call-。"><a href="#若呼叫物件某個方法，但這個方法未被定義時，就會觸發-call-。" class="headerlink" title="若呼叫物件某個方法，但這個方法未被定義時，就會觸發 __call()。"></a>若呼叫物件某個方法，但這個方法未被定義時，就會觸發 <code>__call()</code>。</h4><small style="color: lightslategray">
-__call is triggered when invoking inaccessible methods in an object context.
-</small>
-
-<p>接著來看看下方的範例加強理解：</p>
-<small style="color: lightslategray">
+        <h4 id="接著介紹上一篇沒說明到的枚舉陣列，以-call-為例："><a href="#接著介紹上一篇沒說明到的枚舉陣列，以-call-為例：" class="headerlink" title="接著介紹上一篇沒說明到的枚舉陣列，以 __call 為例："></a>接著介紹上一篇沒說明到的枚舉陣列，以 __call 為例：</h4><small style="color: lightslategray">
 Example:
 </small>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    public function __call($methodName, $arguments)</span><br><span class="line">    &#123;</span><br><span class="line">        return $methodName . &#39; method not exist&#39;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function test1($word)</span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;test1 method result is &#39; . $word;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$word &#x3D; &#39;Word&#39;;</span><br><span class="line">$test &#x3D; new Test();</span><br><span class="line">$show1 &#x3D; $test-&gt;test1($word);</span><br><span class="line">$show2 &#x3D; $test-&gt;test2($word);</span><br><span class="line">echo $show1;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo $show2 ;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    public function __call($methodName, $arguments)</span><br><span class="line">    &#123;</span><br><span class="line">				 var_dump($arguments);</span><br><span class="line">				 echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">        return $methodName . &#39; method not exist. arguments: &#39; . implode(&#39; &amp; &#39;, $arguments);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function test1($word1, $word2)</span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;test1 method result: &#39; . $word1 . &#39; &amp; &#39; . $word2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function test2($word1, $word2 &#x3D; &#39;default2&#39;)</span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;test2 method result: &#39; . $word1 . &#39; &amp; &#39; . $word2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function test3($word1 &#x3D; &#39;default1&#39;, $word2 &#x3D; &#39;default2&#39;)</span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;test3 method result: &#39; . $word1 . &#39; &amp; &#39; . $word2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$test &#x3D; new Test();</span><br><span class="line"></span><br><span class="line">$show1 &#x3D; $test-&gt;test1(&#39;Word1&#39;, &#39;Word2&#39;);</span><br><span class="line"></span><br><span class="line">echo $show1;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show21 &#x3D; $test-&gt;test2(&#39;Word1&#39;);</span><br><span class="line">$show22 &#x3D; $test-&gt;test2(&#39;Word1&#39;, &#39;Word2&#39;);</span><br><span class="line"></span><br><span class="line">echo $show21;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo $show22;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show31 &#x3D; $test-&gt;test3();</span><br><span class="line">$show32 &#x3D; $test-&gt;test3(&#39;Word1&#39;);</span><br><span class="line">$show33 &#x3D; $test-&gt;test3(&#39;Word1&#39;, &#39;Word2&#39;);</span><br><span class="line"></span><br><span class="line">echo $show31;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo $show32;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo $show33;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show4 &#x3D; $test-&gt;test4();</span><br><span class="line"></span><br><span class="line">echo $show4;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show5 &#x3D; $test-&gt;test5(&#39;Word1&#39;);</span><br><span class="line"></span><br><span class="line">echo $show5;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show6 &#x3D; $test-&gt;test6(&#39;Word1&#39;, &#39;Word2&#39;);</span><br><span class="line"></span><br><span class="line">echo $show6;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show7 &#x3D; $test-&gt;test7(&#39;Word1&#39;, &#39;Word2&#39;, &#39;Word3&#39;);</span><br><span class="line"></span><br><span class="line">echo $show7;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br></pre></td></tr></table></figure>
 
 <p>結果顯示如下：</p>
 <small style="color: lightslategray">
 Result:
 </small>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test1 method result is Word</span><br><span class="line">test2 method not exist</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">test1 method result: Word1 &amp; Word2</span><br><span class="line"></span><br><span class="line">test2 method result: Word1 &amp; default2</span><br><span class="line">test2 method result: Word1 &amp; Word2</span><br><span class="line"></span><br><span class="line">test3 method result: default1 &amp; default2</span><br><span class="line">test3 method result: Word1 &amp; default2</span><br><span class="line">test3 method result: Word1 &amp; Word2</span><br><span class="line"></span><br><span class="line">array(0) &#123; &#125;</span><br><span class="line">test4 method not exist. arguments:</span><br><span class="line"></span><br><span class="line">array(1) &#123; [0]&#x3D;&gt; string(5) &quot;Word1&quot; &#125;</span><br><span class="line">test5 method not exist. arguments: Word1</span><br><span class="line"></span><br><span class="line">array(2) &#123; [0]&#x3D;&gt; string(5) &quot;Word1&quot; [1]&#x3D;&gt; string(5) &quot;Word2&quot; &#125;</span><br><span class="line">test6 method not exist. arguments: Word1 &amp; Word2</span><br><span class="line"></span><br><span class="line">array(3) &#123; [0]&#x3D;&gt; string(5) &quot;Word1&quot; [1]&#x3D;&gt; string(5) &quot;Word2&quot; [2]&#x3D;&gt; string(5) &quot;Word3&quot; &#125;</span><br><span class="line">test7 method not exist. arguments: Word1 &amp; Word2 &amp; Word3</span><br></pre></td></tr></table></figure>
 
-<p>宣告一個類別為 Test 的物件，呼叫方法 <code>test1()</code> 和 <code>test2()</code>。<br>Test 類別中有定義 <code>test1()</code> 這個方法，而未定義 <code>test2()</code>，所以當呼叫 <code>test2()</code> 時，就會觸發 <code>__call()</code>。</p>
-<h3 id="callStatic"><a href="#callStatic" class="headerlink" title="__callStatic"></a>__callStatic</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public __callStatic(string $name, array $arguments): mixed</span><br></pre></td></tr></table></figure>
-
-<p><code>$name</code> → 要呼叫的方法名稱</p>
-<small style="color: lightslategray">
-The $name argument is the name of the method being called.<br>
-</small>
-
-<p><code>$arguments</code> → 傳給 <code>$name</code> 方法的枚舉陣列</p>
-<small style="color: lightslategray">
-The $arguments argument is an enumerated array containing the parameters passed to the $name's method.
-</small>
-
-<h4 id="若呼叫物件某個靜態方法，但這個靜態方法未被定義時，就會觸發-callStatic-。"><a href="#若呼叫物件某個靜態方法，但這個靜態方法未被定義時，就會觸發-callStatic-。" class="headerlink" title="若呼叫物件某個靜態方法，但這個靜態方法未被定義時，就會觸發 __callStatic()。"></a>若呼叫物件某個靜態方法，但這個靜態方法未被定義時，就會觸發 <code>__callStatic()</code>。</h4><small style="color: lightslategray">
-__callStatic() is triggered when invoking inaccessible methods in a static context.
-</small>
-
-<p>PHP 5.3.0 之後版本才有此方法。</p>
-<small style="color: lightslategray">
-Version 5.3.0 → Added __callStatic().
-</small>
-
-<p>接著來看看下方的範例加強理解：</p>
-<small style="color: lightslategray">
-Example:
-</small>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    public static function __callStatic($methodName, $arguments)</span><br><span class="line">    &#123;</span><br><span class="line">        return $methodName . &#39; method not exist&#39;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function test1($word)</span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;test1 method result is &#39; . $word;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$word &#x3D; &#39;Word&#39;;</span><br><span class="line">$show1 &#x3D; Test::test1($word);</span><br><span class="line">$show2 &#x3D; Test::test2($word);</span><br><span class="line">echo $show1;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo $show2 ;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br></pre></td></tr></table></figure>
+<p>&ensp;&ensp;&ensp;&ensp;Test 類別 test1 方法定義兩個傳入參數，分別為 $word1 和 $word2，因此傳入參數的數量就必須是兩個。</p>
+<p>&ensp;&ensp;&ensp;&ensp;不過看到這裡有些人可能會覺得疑惑，明明有看到像這樣的方法但不是傳兩個的參數的呀～那是因為預設值的關係喔！往下看 Test 類別 test2 方法的 $word2 設定了預設值 default2，此時就算不傳入第二個參數也可以，但不代表傳入參數只有一個，而是程式早已經取得第二個傳入參數的值，也就是一開始就設好的預設值，所以傳入參數的數量不變一樣是兩個。以此類推，Test 類別 test3 方法的兩個傳入參數都設定好預設值，則可以不傳任何值，就能取到傳入參數值 default1 和 default2。</p>
+<p>&ensp;&ensp;&ensp;&ensp;講到這裡會不會有人想說，那 $word1 設定預設值而 $word2 不設定預設值，是不是也可以只傳一個參數值呢？答案是不行，這是因為程式是按照順序做判斷，程式一開始會去比對第一個傳入參數 $word1 與放在第一個位置的值，有值的話就不會管有無預設值，當第一個位置的參數比對完之後，才會接著比對第二個傳入參數 $word2 與第二個位置的值，若第二個位置沒有值就會去判斷是否有設定預設值，若是都沒有程式就會出錯啦～所以要留意可以省略幾個傳入值，只能從後面有設定預設值的傳入參數開始算。</p>
+<p>&ensp;&ensp;&ensp;&ensp;前面講這麽多到底跟枚舉陣列有什麼關係呢？前面講到的是定義好傳入參數的數量就必須擁有那個數量的傳入參數，而枚舉陣列則是不限制傳入參數的數量。不用懷疑，你可沒看錯喔～枚舉陣列可以允許傳入 0 ～ N 個動態數量的參數，並集成一個陣列形式的變數值。若還是不明白就從範例中來看，呼叫 test4、test5、test6、test7 方法，分別傳入 0、1、2、3 個不同數量的參數值，因為 Test 類別沒有定義這些方法，所以觸發了 __call 方法，透過 var_dump 函式的呈現，可以清楚知道 $arguments 的資料型態為陣列且包含了所有傳入的參數值。最後要提醒一點，就是不是所有的方法都可以使用枚舉陣列，而是只有一些特殊方法才會擁有的特例喔！</p>
+<p><img src="/images/2020-04-21_1.png" alt="__call"></p>
+<h4 id="callStatic-與-call-的-arguments-也是一樣的用法。"><a href="#callStatic-與-call-的-arguments-也是一樣的用法。" class="headerlink" title="__callStatic 與 __call 的 $arguments 也是一樣的用法。"></a>__callStatic 與 __call 的 $arguments 也是一樣的用法。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class Test</span><br><span class="line">&#123;</span><br><span class="line">    public static function __callStatic($methodName, $arguments)</span><br><span class="line">    &#123;</span><br><span class="line">        var_dump($arguments);</span><br><span class="line">        echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">        return $methodName . &#39; method not exist. arguments: &#39; . implode(&#39; &amp; &#39;, $arguments);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function test1($word1, $word2)</span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;test1 method result: &#39; . $word1 . &#39; &amp; &#39; . $word2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function test2($word1, $word2 &#x3D; &#39;default2&#39;)</span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;test2 method result: &#39; . $word1 . &#39; &amp; &#39; . $word2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static function test3($word1 &#x3D; &#39;default1&#39;, $word2 &#x3D; &#39;default2&#39;)</span><br><span class="line">    &#123;</span><br><span class="line">        return &#39;test3 method result: &#39; . $word1 . &#39; &amp; &#39; . $word2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$show1 &#x3D; Test::test1(&#39;Word1&#39;, &#39;Word2&#39;);</span><br><span class="line"></span><br><span class="line">echo $show1;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show21 &#x3D; Test::test2(&#39;Word1&#39;);</span><br><span class="line">$show22 &#x3D; Test::test2(&#39;Word1&#39;, &#39;Word2&#39;);</span><br><span class="line"></span><br><span class="line">echo $show21;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo $show22;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show31 &#x3D; Test::test3();</span><br><span class="line">$show32 &#x3D; Test::test3(&#39;Word1&#39;);</span><br><span class="line">$show33 &#x3D; Test::test3(&#39;Word1&#39;, &#39;Word2&#39;);</span><br><span class="line"></span><br><span class="line">echo $show31;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo $show32;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo $show33;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show4 &#x3D; Test::test4();</span><br><span class="line"></span><br><span class="line">echo $show4;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show5 &#x3D; Test::test5(&#39;Word1&#39;);</span><br><span class="line"></span><br><span class="line">echo $show5;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show6 &#x3D; Test::test6(&#39;Word1&#39;, &#39;Word2&#39;);</span><br><span class="line"></span><br><span class="line">echo $show6;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br><span class="line"></span><br><span class="line">$show7 &#x3D; Test::test7(&#39;Word1&#39;, &#39;Word2&#39;, &#39;Word3&#39;);</span><br><span class="line"></span><br><span class="line">echo $show7;</span><br><span class="line">echo &#39;&lt;br&gt;&#39;;</span><br></pre></td></tr></table></figure>
 
 <p>結果顯示如下：</p>
 <small style="color: lightslategray">
 Result:
 </small>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test1 method result is Word</span><br><span class="line">test2 method not exist</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">test1 method result: Word1 &amp; Word2</span><br><span class="line"></span><br><span class="line">test2 method result: Word1 &amp; default2</span><br><span class="line">test2 method result: Word1 &amp; Word2</span><br><span class="line"></span><br><span class="line">test3 method result: default1 &amp; default2</span><br><span class="line">test3 method result: Word1 &amp; default2</span><br><span class="line">test3 method result: Word1 &amp; Word2</span><br><span class="line"></span><br><span class="line">array(0) &#123; &#125;</span><br><span class="line">test4 method not exist. arguments:</span><br><span class="line"></span><br><span class="line">array(1) &#123; [0]&#x3D;&gt; string(5) &quot;Word1&quot; &#125;</span><br><span class="line">test5 method not exist. arguments: Word1</span><br><span class="line"></span><br><span class="line">array(2) &#123; [0]&#x3D;&gt; string(5) &quot;Word1&quot; [1]&#x3D;&gt; string(5) &quot;Word2&quot; &#125;</span><br><span class="line">test6 method not exist. arguments: Word1 &amp; Word2</span><br><span class="line"></span><br><span class="line">array(3) &#123; [0]&#x3D;&gt; string(5) &quot;Word1&quot; [1]&#x3D;&gt; string(5) &quot;Word2&quot; [2]&#x3D;&gt; string(5) &quot;Word3&quot; &#125;</span><br><span class="line">test7 method not exist. arguments: Word1 &amp; Word2 &amp; Word3</span><br></pre></td></tr></table></figure>
 
-<p>呼叫 Test 類別中的 <code>test1()</code> 和 <code>test2()</code> 靜態方法。<br>Test 類別中有定義 <code>test1()</code> 這個靜態方法，而未定義 <code>test2()</code>，所以當呼叫 <code>test2()</code> 時，就會觸發 <code>__callStatic()</code>。</p>
+<p><img src="/images/2020-04-21_2.png" alt="__callStatic"></p>
 <blockquote>
-<p><a href="/2020/04/21/PHP%20方法多載%202/">下一篇 PHP 方法多載 2</a></p>
+<p><a href="/2020/04/18/PHP%20方法多載%201/">上一篇 PHP 方法多載 1</a></p>
 </blockquote>
 
       </div>
@@ -468,7 +412,7 @@ Result:
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-04-21T14:57:10+00:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-04-21T15:04:06+00:00">
   <a class='notlink'>
     <i class="fas fa-clock" aria-hidden="true"></i>
     <p>更新於 2020年4月21日</p>
@@ -498,14 +442,15 @@ Result:
       
           <div class="prev-next">
               
-                  <section class="prev">
-                      <span class="art-item-left">
-                          <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一頁</h6>
+              
+                  <section class="next">
+                      <span class="art-item-right" aria-hidden="true">
+                          <h6>下一頁&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                           <h4>
-                              <a href="/2020/04/21/PHP%20%E6%96%B9%E6%B3%95%E5%A4%9A%E8%BC%89%202/" rel="prev" title="PHP 方法多載 2">
-                                
-                                    PHP 方法多載 2
-                                
+                              <a href="/2020/04/18/PHP%20%E6%96%B9%E6%B3%95%E5%A4%9A%E8%BC%89%201/" rel="prev" title="PHP 方法多載 1">
+                                  
+                                      PHP 方法多載 1
+                                  
                               </a>
                           </h4>
                           
@@ -513,21 +458,6 @@ Result:
                               <h6 class="tags">
                                   <a class="tag" href="/tags/PHP/"><i class="fas fa-tag fa-fw" aria-hidden="true"></i> PHP</a>
                               </h6>
-                          
-                      </span>
-                  </section>
-              
-              
-                  <section class="next">
-                      <span class="art-item-right" aria-hidden="true">
-                          <h6>下一頁&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
-                          <h4>
-                              <a href="/2019/12/30/%E5%96%B5/" rel="prev" title="喵">
-                                  
-                                      喵
-                                  
-                              </a>
-                          </h4>
                           
                       </span>
                   </section>
@@ -570,7 +500,7 @@ Result:
 
   <script>
     window.subData = {
-      title: 'PHP 方法多載 1',
+      title: 'PHP 方法多載 2',
       tools: true
     }
   </script>
@@ -1028,7 +958,7 @@ Result:
   <script>
     var disqus_shortname = 'flora28wish';
     
-      var disqus_url = 'http://flora28wish.github.io/2020/04/18/PHP%20%E6%96%B9%E6%B3%95%E5%A4%9A%E8%BC%89%201/';
+      var disqus_url = 'http://flora28wish.github.io/2020/04/21/PHP%20%E6%96%B9%E6%B3%95%E5%A4%9A%E8%BC%89%202/';
     
     (function(){
       var dsq = document.createElement('script');
