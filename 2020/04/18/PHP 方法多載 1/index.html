@@ -379,7 +379,7 @@
 <blockquote>
 <p>Overloading methods via the __call() and __callStatic() magic methods.</p>
 </blockquote>
-<h3 id="call"><a href="#call" class="headerlink" title="__call"></a>__call</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> __call(string $name, <span class="keyword">array</span> $arguments): mixed</span><br></pre></td></tr></table></figure>
+<h3 id="call"><a href="#call" class="headerlink" title="__call()"></a>__call()</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> __call(string $name, <span class="keyword">array</span> $arguments): mixed</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://gist.github.com/flora28wish/34cc3d465b1125353303b6631b0853df#file-20200418_code1-php" target="_blank" rel="noopener">↑ Gist</a></p>
 <p>$name → 要呼叫的方法名稱</p>
@@ -400,7 +400,7 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">method1 method result is Word</span><br><span class="line">method2 method not exist</span><br></pre></td></tr></table></figure>
 
 <p>宣告一個類別為 Test 的物件，呼叫方法 method1() 和 method2()。Test 類別中有定義 method1() 這個方法，而未定義 method2()，所以當呼叫 method2() 時，就會觸發 __call()。</p>
-<h3 id="callStatic"><a href="#callStatic" class="headerlink" title="__callStatic ()"></a>__callStatic ()</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> __callStatic(string $name, <span class="keyword">array</span> $arguments): mixed</span><br></pre></td></tr></table></figure>
+<h3 id="callStatic"><a href="#callStatic" class="headerlink" title="__callStatic()"></a>__callStatic()</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> __callStatic(string $name, <span class="keyword">array</span> $arguments): mixed</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://gist.github.com/flora28wish/34cc3d465b1125353303b6631b0853df#file-20200418_code2-php" target="_blank" rel="noopener">↑ Gist</a></p>
 <p>$name → 要呼叫的方法名稱</p>
